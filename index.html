@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📄 Microtuff Document Portal — Employee Self-Service</title>
+<style>
+:root {
+  --bg: #0a0e17;
+  --card: #111827;
+  --border: #2a3a52;
+  --gold: #d4a843;
+  --gold-light: #f0d078;
+  --green: #10b981;
+  --red: #ef4444;
+  --blue: #1e90ff;
+  --text: #e2e8f0;
+  --muted: #64748b;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+.header {
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #0d1420, var(--card));
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.brand {
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.brand-sub {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  -webkit-text-fill-color: var(--muted);
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 24px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: all 0.2s;
+}
+.card:hover {
+  border-color: var(--gold);
+}
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-group {
+  margin-bottom: 14px;
+}
+.form-group label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+}
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--gold);
+}
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #b8922e, var(--gold));
+  color: #000;
+}
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-success {
+  background: linear-gradient(135deg, #059669, var(--green));
+  color: #fff;
+}
+.btn-danger {
+  background: linear-gradient(135deg, #dc2626, var(--red));
+  color: #fff;
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.file-list {
+  display: grid;
+  gap: 8px;
+}
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.file-item .name {
+  font-size: 13px;
+  font-weight: 500;
+}
+.file-item .date {
+  font-size: 11px;
+  color: var(--muted);
+}
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 480px) {
+  .container { padding: 16px; }
+  .card { padding: 18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="brand">📄 MICROTUFF DOCUMENTS</div>
+    <div class="brand-sub">Employee Self-Service Portal</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- PAY STUBS -->
+  <div class="card">
+    <div class="card-title">💰 Pay Stubs</div>
+    <div class="file-list" id="payStubs">
+      <div class="file-item">
+        <span class="name">Select pay period to download</span>
+      </div>
+    </div>
+    <div style="margin-top: 12px;">
+      <select id="payPeriod" onchange="loadPayStub()" style="padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 13px;">
+        <option value="">-- Choose Period --</option>
+        <option value="jun2026">June 2026</option>
+        <option value="may2026">May 2026</option>
+        <option value="apr2026">April 2026</option>
+      </select>
+      <button class="btn btn-primary" id="downloadPayStub" onclick="downloadPayStub()" disabled>📥 Download PDF</button>
+    </div>
+  </div>
+
+  <!-- BANK STATEMENTS -->
+  <div class="card">
+    <div class="card-title">🏦 Bank Statements</div>
+    <div class="file-list">
+      <div class="file-item">
+        <div>
+          <div class="name">Diamond Richards — June 2026</div>
+          <div class="date">Scotiabank · Account 882179</div>
+        </div>
+        <button class="btn btn-success" style="padding: 6px 12px; font-size: 12px;">📥 Download</button>
+      </div>
+      <div class="file-item">
+        <div>
+          <div class="name">Diamond Richards — May 2026</div>
+          <div class="date">Scotiabank · Account 882179</div>
+        </div>
+        <button class="btn btn-success" style="padding: 6px 12px; font-size: 12px;">📥 Download</button>
+      </div>
+      <div class="file-item">
+        <div>
+          <div class="name">Diamond Richards — April 2026</div>
+          <div class="date">Scotiabank · Account 882179</div>
+        </div>
+        <button class="btn btn-success" style="padding: 6px 12px; font-size: 12px;">📥 Download</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPLOYMENT LETTER -->
+  <div class="card">
+    <div class="card-title">📝 Employment Verification</div>
+    <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
+      Request an employment verification letter for your records.
+    </p>
+    <button class="btn btn-primary" onclick="requestLetter()">📋 Request Letter</button>
+    <div id="letterStatus" style="margin-top: 12px; font-size: 13px; display: none;"></div>
+  </div>
+
+  <!-- DOCUMENT REQUEST -->
+  <div class="card">
+    <div class="card-title">📨 Request Document</div>
+    <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
+      Need a specific document? Submit a request and we'll prepare it.
+    </p>
+    <select id="docType" style="padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 13px; margin-bottom: 10px;">
+      <option value="">-- Document Type --</option>
+      <option value="employment">Employment Letter</option>
+      <option value="income">Income Statement</option>
+      <option value="tax">Tax Form</option>
+      <option value="reference">Reference Letter</option>
+      <option value="other">Other</option>
+    </select>
+    <input type="text" id="docNotes" placeholder="Additional notes..." style="margin-left: 8px; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 13px; width: 250px;">
+    <br><br>
+    <button class="btn btn-primary" onclick="submitRequest()">📤 Submit Request</button>
+    <div id="requestStatus" style="margin-top: 12px; font-size: 13px;"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  🔒 Secure Portal · Microtuff Solutions © 2026 · mrmicrotuff@microtuffsolutions.com
+</div>
+
+<script>
+function loadPayStub() {
+  const period = document.getElementById('payPeriod').value;
+  const btn = document.getElementById('downloadPayStub');
+  btn.disabled = !period;
+  
+  if (period) {
+    const labels = {
+      jun2026: 'Diamond Richards — June 2026 Pay Stub',
+      may2026: 'Diamond Richards — May 2026 Pay Stub',
+      apr2026: 'Diamond Richards — April 2026 Pay Stub'
+    };
+    document.querySelector('#payStubs .file-item .name').textContent = labels[period];
+  }
+}
+
+function downloadPayStub() {
+  const period = document.getElementById('payPeriod').value;
+  if (!period) return;
+  
+  // In production, this links to actual PDF files
+  alert('Downloading pay stub for ' + period + '...\n\n(Production: links to actual PDF files on your server)');
+}
+
+function requestLetter() {
+  const status = document.getElementById('letterStatus');
+  status.style.display = 'block';
+  status.innerHTML = '✅ Letter request submitted!<br><span style="color: var(--muted);">You will be notified when it\'s ready (24-48 hrs).</span>';
+}
+
+function submitRequest() {
+  const type = document.getElementById('docType').value;
+  const notes = document.getElementById('docNotes').value;
+  const status = document.getElementById('requestStatus');
+  
+  if (!type) {
+    status.innerHTML = '<span style="color: var(--red);">⚠️ Please select a document type.</span>';
+    return;
+  }
+  
+  status.innerHTML = '✅ Request submitted! We\'ll prepare your document and notify you.<br><span style="color: var(--muted);">Reference: DOC-' + Math.floor(Math.random() * 900000 + 100000) + '</span>';
+  document.getElementById('docType').value = '';
+  document.getElementById('docNotes').value = '';
+}
+</script>
+
+</body>
+</html>
