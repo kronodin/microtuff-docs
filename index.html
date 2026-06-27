@@ -299,5 +299,65 @@ function submitRequest() {
 }
 </script>
 
+
+    <!-- EMPLOYEE PORTAL -->
+    <section id="ee-portal" style="padding:5rem 2rem;min-height:70vh">
+      <div style="max-width:520px;margin:0 auto;text-align:center">
+        <h1 style="font-size:2.2rem;color:#d4a843;margin-bottom:.5rem;font-weight:700">👤 Employee Document Portal</h1>
+        <p style="color:#8899aa;margin-bottom:2.5rem;font-size:1.05rem">Enter your Employee ID to access your documents</p>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(212,168,67,.2);border-radius:16px;padding:2rem;margin-bottom:2rem">
+          <label style="color:#d4a843;font-size:.9rem;display:block;margin-bottom:.5rem;text-align:left;font-weight:600">Employee ID</label>
+          <input type="text" id="ee-id" placeholder="e.g. 0069" maxlength="4" style="width:100%;padding:1rem 1.2rem;font-size:1.3rem;background:rgba(0,0,0,.4);border:1px solid rgba(212,168,67,.3);border-radius:10px;color:#e0e0e0;text-align:center;letter-spacing:.2em;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#d4a843';this.style.boxShadow='0 0 25px rgba(212,168,67,.15)'" onblur="this.style.borderColor='rgba(212,168,67,.3)';this.style.boxShadow='none'">
+          <div id="ee-error" style="display:none;color:#ef4444;font-size:.85rem;margin-top:.5rem;text-align:center"></div>
+          <button onclick="eeLogin()" style="width:100%;margin-top:1rem;padding:.9rem;background:linear-gradient(135deg,#d4a843,#b8922f);color:#0a0e17;font-weight:700;font-size:1rem;border:none;border-radius:10px;cursor:pointer;transition:all .3s" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">Access Documents</button>
+        </div>
+        <div id="ee-dash" style="display:none">
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(212,168,67,.3);border-radius:16px;padding:2rem;text-align:left;animation:fadeIn .5s ease">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;border-bottom:1px solid rgba(212,168,67,.2);padding-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+              <div>
+                <h3 style="color:#d4a843;font-size:1.3rem;margin:0" id="ee-name"></h3>
+                <p style="color:#8899aa;font-size:.85rem;margin:.3rem 0 0">ID: <span id="ee-id-d"></span> • <span id="ee-dept"></span></p>
+              </div>
+              <button onclick="eeLogout()" style="background:rgba(239,68,68,.2);color:#ef4444;border:1px solid rgba(239,68,68,.3);padding:.5rem 1rem;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:600">Logout</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+              <div style="background:rgba(212,168,67,.05);padding:1rem;border-radius:12px">
+                <p style="color:#8899aa;font-size:.7rem;margin:0 0 .3rem;text-transform:uppercase;letter-spacing:.05em">Pay Period</p>
+                <p style="color:#e0e0e0;font-size:.95rem;margin:0;font-weight:600" id="ee-period"></p>
+              </div>
+              <div style="background:rgba(212,168,67,.05);padding:1rem;border-radius:12px">
+                <p style="color:#8899aa;font-size:.7rem;margin:0 0 .3rem;text-transform:uppercase;letter-spacing:.05em">Amount</p>
+                <p style="color:#22c55e;font-size:.95rem;margin:0;font-weight:600" id="ee-amount"></p>
+              </div>
+            </div>
+            <div>
+              <h4 style="color:#d4a843;font-size:1rem;margin-bottom:1rem">📁 Your Documents</h4>
+              <ul id="ee-docs" style="list-style:none;padding:0;margin:0"></ul>
+            </div>
+            <div style="margin-top:1.5rem;padding:1rem;background:rgba(255,165,0,.08);border:1px solid rgba(255,165,0,.2);border-radius:8px">
+              <p style="color:#ffa500;font-size:.8rem;margin:0">⚠️ Private information is protected. Only document names and pay summaries shown. Contact HR for full records.</p>
+            </div>
+          </div>
+        </div>
+        <p style="color:#555;font-size:.8rem;margin-top:2rem">Need help? HR: mrmicrotuff@microtuffsolutions.com | 1 (876) 803-6062</p>
+      </div>
+    </section>
+    <script>
+    var EE={ '0069':{name:'Diamond Richards',id:'0069',dept:'Operations',amt:'$8,500.00',period:'Jun 16-30, 2026',docs:['Paystub — June 2026','Account Statement — Q2 2026']},'6969':{name:'Kronodin (CEO)',id:'6969',dept:'Executive',amt:'Contact HR',period:'On Demand',docs:['Executive Summary Q2 2026','Company Policy Manual']}};
+    function eeLogin(){
+      var id=document.getElementById('ee-id').value.trim(),e=EE[id],err=document.getElementById('ee-error'),dash=document.getElementById('ee-dash');
+      dash.style.display='none',err.style.display='none';
+      if(!id){err.textContent='Please enter your Employee ID';err.style.display='block';return}
+      if(!e){err.textContent='Invalid ID. Contact HR.';err.style.display='block';return}
+      document.getElementById('ee-name').textContent=e.name;document.getElementById('ee-id-d').textContent=e.id;document.getElementById('ee-dept').textContent=e.dept;
+      document.getElementById('ee-period').textContent=e.period;document.getElementById('ee-amount').textContent=e.amt;
+      var ul=document.getElementById('ee-docs');ul.innerHTML='';
+      e.docs.forEach(function(d){var li=document.createElement('li');li.innerHTML='📄 '+d;li.style.cssText='padding:.6rem;margin:.4rem 0;background:rgba(255,255,255,.03);border-radius:8px;font-size:.9rem;border-left:3px solid #d4a843';ul.appendChild(li)});
+      dash.style.display='block';
+    }
+    function eeLogout(){document.getElementById('ee-dash').style.display='none';document.getElementById('ee-id').value='';document.getElementById('ee-error').style.display='none'}
+    document.addEventListener('keydown',function(e){if(e.key==='Enter'&&document.activeElement.id==='ee-id')eeLogin()});
+    </script>
+
 </body>
 </html>
